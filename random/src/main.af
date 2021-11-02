@@ -1,0 +1,13 @@
+.needs "/std/head/io.gs"
+.needs "/std/head/math.gs"
+
+int main(){
+	// Print out random numbers up to 9
+	Random r = new Random();
+	int i = 0;
+	while(i < 10){
+		i = r.next(10);
+		print("Random Number: ");
+	}
+	return 0;
+};

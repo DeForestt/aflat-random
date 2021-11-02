@@ -1,0 +1,132 @@
+.needs "/std/head/std.gs"
+.needs "/std/head/asm.gs"
+
+Block head = #0;
+
+//helpers
+
+Block findFreeBlock(Block last, int size) {
+  Block current;
+  current = head;
+  size = size - 1;
+  while (current != #0) {
+    last = current;
+    
+    if(current.free == 1){
+        if (current.size > size){return current};
+    };
+
+    current = current.next;
+    last = current;
+
+  };
+  return #0;
+};
+
+Block requestSpace(Block last, int size){
+    Block block = brk(0);
+    int nsize = size + Block;
+    adr i = brk(block + nsize);
+
+    if(i < #0){return #0};
+
+    if (last != #0){
+        last.next = block;
+    };
+    block.next = #0;
+    block.size = size;
+    block.free = 0;
+
+    return block;
+};
+
+Time newTime(adr count){
+    Time this = malloc(Time);
+    this.amount = count;
+    return this;
+};
+
+Block getBlock(adr ptr){
+    ptr = ptr - Block;
+    return ptr;
+};
+
+//Interface
+int memcopy (adr from, adr to, int size){
+    int i = 0;
+    while(i < size){
+        to =: from as byte;
+        to = to + #1;
+        from = from + #1;
+    };
+    return 0;
+};
+
+
+int free(adr ptr){
+    if(ptr == #0){
+        return 0;
+    };
+    
+    Block block = getBlock(ptr);
+    block.free = 1;
+
+    return 0;
+};
+
+adr malloc(int size){
+
+    Block block;
+
+    if(size < 0){return #0};
+
+    if(head == #0){
+        block = requestSpace(#0, size);
+        block = block + #16;
+        return block;
+    };
+    Block last;
+    last = head;
+    block = findFreeBlock(head, size);
+    if (block == #0){
+        block = requestSpace(last, size);
+        if(block == #0){return #0};
+    };
+    block = block + Block;
+    return block;
+};
+
+adr realloc(adr ptr, int size){
+    if (ptr == #0){
+        return malloc(size);
+    };
+
+    Block block = getBlock(ptr);
+    int nsize = size - 1;
+    if(block.size > nsize){
+        return ptr;
+    };
+    
+    adr new_ptr = malloc(size);
+    if (new_ptr == #0){return #0;};
+    memcopy(ptr, new_ptr, block.size);
+    free(ptr);
+    return new_ptr;
+};
+
+Bit newBit(int value){
+	Bit b = malloc(Bit);
+	b.value = value;
+	b.last = #0;
+	b.next = #0;
+	return b;
+};
+
+Times newTimes(){
+    Times t = malloc(Times);
+    t.tms_cstime = #0;
+    t.tms_cutime = #0;
+    t.tms_stime = #0;
+    t.tms_utime = #0;
+    return t;
+};
