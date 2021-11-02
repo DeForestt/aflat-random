@@ -24,9 +24,27 @@ int main(){
 	// Print out random numbers up to 9
 	Random r = newRandom();
 	i = 0;
-	while(i < 10){
+	while(i < 100){
 		int j = r.next(10);
-		print("Random Number: "); printInt(j); print("\n");
+		cn = numbers.get(j);
+		int currCount;
+		currCount = cn.count;
+		cn.count = currCount + 1;
+		//print("Random Number: "); printInt(j); print("\n");
+		i = i + 1;
+	};
+
+	// graph the counts for each number
+	i = 0;
+	while(i < 10){
+		cn = numbers.get(i);
+		print("Number: "); printInt(cn.number); print(" Count: ");
+		j = 0;
+		while(j < cn.count){
+			print("*");
+			j = j + 1;
+		};
+		print("\n");
 		i = i + 1;
 	};
 	return 0;
