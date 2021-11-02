@@ -1,11 +1,29 @@
 .needs "/std/head/io.gs"
 .needs "/std/head/math.gs"
 .needs "/std/head/Collections.gs"
+.needs "/std/head/std.gs"
+
+// A struct to hold a number and its count.
+struct CountedNumber {
+	int number;
+	int count;
+};
 
 int main(){
+	// Create a list of CouontedNumber objects.
+	LinkedList numbers = newList();
+	int i = 0;
+	while(i < 10){
+		CountedNumber cn = malloc(CountedNumber);
+		cn.number = i;
+		cn.count = 0;
+		numbers.append(cn);
+		i = i + 1;
+	};
+
 	// Print out random numbers up to 9
 	Random r = newRandom();
-	int i = 0;
+	i = 0;
 	while(i < 10){
 		int j = r.next(10);
 		print("Random Number: "); printInt(j); print("\n");
