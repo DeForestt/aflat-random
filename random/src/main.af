@@ -3,11 +3,12 @@
 
 int main(){
 	// Print out random numbers up to 9
-	Random r = new Random();
+	Random r = newRandom();
 	int i = 0;
 	while(i < 10){
 		i = r.next(10);
-		print("Random Number: ");
-	}
+		print("Random Number: "); printInt(i); print("\n");
+		i = i + 1;
+	};
 	return 0;
 };
