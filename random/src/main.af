@@ -6,8 +6,8 @@ int main(){
 	Random r = newRandom();
 	int i = 0;
 	while(i < 10){
-		i = r.next(10);
-		print("Random Number: "); printInt(i); print("\n");
+		int j = r.next(10);
+		print("Random Number: "); printInt(j); print("\n");
 		i = i + 1;
 	};
 	return 0;
